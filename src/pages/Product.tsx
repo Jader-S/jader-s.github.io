@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import top from '../assets/content/product/base/top.png'
 import bottom from '../assets/content/product/base/bottom.png'
 import styles from './Product.module.css'
@@ -25,8 +25,10 @@ function useProductItems(): Item[] {
 
 export default function Product() {
   const items = useProductItems()
+  
   const [heroHeight, setHeroHeight] = useState<number | undefined>()
   const heroRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<Map<string, HTMLElement>>(new Map())
 
   useEffect(() => {
     const img = new Image()
@@ -34,22 +36,61 @@ export default function Product() {
     img.src = top
   }, [])
 
-  const observer = useRef<IntersectionObserver | null>(null)
-  const [, setActive] = useState<string | null>(null)
-  const setRefs = useMemo(() => new Map<string, HTMLElement>(), [])
-
+  // 使用 scroll 事件监听，找到当前在视口中心的元素
   useEffect(() => {
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive((e.target as HTMLElement).id)
-        })
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: [0, 1] }
-    )
-    setRefs.forEach((el) => observer.current!.observe(el))
-    return () => observer.current?.disconnect()
-  }, [setRefs])
+    
+    const updateActiveSection = () => {
+      if (itemRefs.current.size === 0) {
+        return
+      }
+      
+      const scrollPosition = window.scrollY + window.innerHeight / 2
+
+      let activeId = ''
+      let minDistance = Infinity
+
+      // 找到距离视口中心最近的元素
+      itemRefs.current.forEach((element, id) => {
+        const rect = element.getBoundingClientRect()
+        const elementCenter = rect.top + window.scrollY + rect.height / 2
+        const distance = Math.abs(elementCenter - scrollPosition)
+
+        if (distance < minDistance) {
+          minDistance = distance
+          activeId = id
+        }
+      })
+
+      // 更新 hash
+      if (activeId && window.location.hash !== `#${activeId}`) {
+        window.history.replaceState(null, '', `#${activeId}`)
+        // 手动触发 hashchange 事件
+        window.dispatchEvent(new HashChangeEvent('hashchange'))
+      }
+    }
+
+    // 防抖处理
+    let timeoutId: number
+    const handleScroll = () => {
+      clearTimeout(timeoutId)
+      timeoutId = window.setTimeout(updateActiveSection, 100)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    document.addEventListener('scroll', handleScroll, { passive: true })
+    
+    // 延迟初始调用，等待元素渲染完成
+    const initTimer = setTimeout(() => {
+      updateActiveSection()
+    }, 1000)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      document.removeEventListener('scroll', handleScroll)
+      clearTimeout(timeoutId)
+      clearTimeout(initTimer)
+    }
+  }, [])
 
   return (
     <div className={styles.wrapper}>
@@ -70,7 +111,11 @@ export default function Product() {
               key={it.id}
               id={it.id}
               ref={(el) => {
-                if (el) setRefs.set(it.id, el)
+                if (el) {
+                  itemRefs.current.set(it.id, el)
+                } else {
+                  itemRefs.current.delete(it.id)
+                }
               }}
               className={styles.block}
             >
