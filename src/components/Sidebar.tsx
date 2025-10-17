@@ -16,8 +16,7 @@ export default function Sidebar({ open, onClose }: Props) {
   // Only navigate when user clicks; no auto-navigation on open.
 
   const productItems = useMemo<ProductItem[]>(() => {
-    // Vite import.meta.glob must start with '/' or './' – use absolute from project root
-    const modules = import.meta.glob('/src/assets/content/product/list/*.png', { eager: true }) as Record<string, any>
+    const modules = import.meta.glob('../assets/content/product/list/*.png', { eager: true }) as Record<string, any>
     const items = Object.keys(modules)
       .map((p) => p.split('/').pop() || '')
       .map((name) => {
@@ -31,6 +30,7 @@ export default function Sidebar({ open, onClose }: Props) {
     return items
   }, [pathname])
   
+  // 监听 URL hash 变化（滚动时 Product 页面会自动更新 hash）
   const [active, setActive] = useState<string | null>(null)
   useEffect(() => {
     const handler = () => setActive(window.location.hash.replace('#', '') || null)
@@ -49,10 +49,6 @@ export default function Sidebar({ open, onClose }: Props) {
                 key={it.id}
                 href={pathname === '/product' ? `#${it.id}` : `/product#${it.id}`}
                 className={`${styles.link} ${active === it.id ? styles.activeLink : ''}`}
-                onClick={() => {
-                  // keep sidebar open; rely on hashchange to highlight
-                  setActive(it.id)
-                }}
               >
                 {it.title}
               </a>
