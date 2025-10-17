@@ -1,0 +1,81 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* max-width: 800px; */
+}
+
+.hero {
+  position: absolute;
+  top:0;
+  z-index: 0;
+  /* max-width: 1080px; */
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.container {
+  padding: 24px 0;
+  align-items: start;
+  z-index: 20;
+  /* max-width: 1080px; */
+}
+/* Fixed left sidebar per product page spec */
+.sideNav {
+  position: fixed;
+  left: 16px;
+  top: 140px;
+  width: var(--product-side-width, 220px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sideNav a {
+  padding: 6px 8px;
+  border-left: 3px solid transparent;
+}
+.active {
+  border-left-color: var(--accent);
+  background: rgba(247, 183, 24, 0.15);
+}
+.content {
+  display: grid;
+  gap: 240px;
+  margin-top: 20vh;
+}
+.block {
+  scroll-margin-top: 72px;
+  display: flex;
+  align-items: center;
+  /* min-height: 400px; */
+}
+.block:nth-child(odd) {
+  flex-direction: row;
+}
+.block:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.block img {
+  /* flex: 1; */
+  /* max-width: 50%; */
+}
+
+.bottom {
+  margin-top: 20px;
+}
+
+@media (max-width: 960px) {
+  .container {
+    padding: 16px;
+  }
+  .sideNav {
+    position: static;
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+}

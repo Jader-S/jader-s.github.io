@@ -1,0 +1,67 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  width: 100%;
+  background: transparent;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+.inner {
+  /* max-width: 1200px; */
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  position: relative;
+  font-family: "DIN Next LT Pro", "DINNextLTPro", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.logo {
+  height: 96px;
+}
+.more {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  cursor: pointer;
+}
+.more img {
+  height: 18px;
+}
+.nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px;
+  border-radius: 9999px;
+  font-weight: 400;
+  font-size: 20px;
+}
+.nav a {
+  color: #232323;
+  font-weight: 400;
+  font-size: 20px;
+  padding: 12px 14px;
+  border-radius: 9999px;
+  line-height: 1;
+  position: relative;
+}
+.nav a.active {
+  color: #fff;
+  /* background: #f4a524; */
+  background-image: url("../assets/header/btn-active.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
