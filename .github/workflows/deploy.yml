@@ -41,13 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            index.html
-            404.html
-            assets/
-            vite.svg
-            _headers
-            .nojekyll
+          path: './dist'
 
   deploy:
     environment:
