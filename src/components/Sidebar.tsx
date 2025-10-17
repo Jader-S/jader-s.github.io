@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './Sidebar.module.css'
 
@@ -12,7 +12,6 @@ function slugify(text: string) {
 
 export default function Sidebar({ open, onClose }: Props) {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
 
   // Only navigate when user clicks; no auto-navigation on open.
 
@@ -50,7 +49,7 @@ export default function Sidebar({ open, onClose }: Props) {
                 key={it.id}
                 href={pathname === '/product' ? `#${it.id}` : `/product#${it.id}`}
                 className={`${styles.link} ${active === it.id ? styles.activeLink : ''}`}
-                onClick={(e) => {
+                onClick={() => {
                   // keep sidebar open; rely on hashchange to highlight
                   setActive(it.id)
                 }}

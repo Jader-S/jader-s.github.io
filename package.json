@@ -1,20 +1,25 @@
 {
-  "name": "valiant-ui",
+  "name": "jader-s.github.io",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
+  "homepage": "https://jader-s.github.io",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^4.3.4",
     "typescript": "~5.9.3",
     "vite": "^5.4.10"
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.4"

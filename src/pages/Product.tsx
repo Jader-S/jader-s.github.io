@@ -35,7 +35,7 @@ export default function Product() {
   }, [])
 
   const observer = useRef<IntersectionObserver | null>(null)
-  const [active, setActive] = useState<string | null>(null)
+  const [, setActive] = useState<string | null>(null)
   const setRefs = useMemo(() => new Map<string, HTMLElement>(), [])
 
   useEffect(() => {
