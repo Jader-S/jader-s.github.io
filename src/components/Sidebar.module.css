@@ -4,6 +4,11 @@
   pointer-events: none;
   z-index: 50;
 }
+.sideLogo {
+  height: 50px;
+  width: 120px;
+  margin: 0 auto;
+}
 .backdrop {
   position: absolute;
   inset: 0;
@@ -15,7 +20,7 @@
 }
 .panel {
   position: absolute;
-  top: 80px;
+  top: 180px;
   left: 0;
   width: 260px;
   background: #fb8218;
@@ -24,12 +29,36 @@
   padding: 16px 0 48px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   border-top-right-radius: 16px;
   border-bottom-right-radius: 16px;
   font-size: 24px;
   color: #fff;
+}
+.productWrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+
+/* 自定义滚动条样式 */
+.productWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.productWrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.productWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.productWrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 .open {
   pointer-events: auto;
