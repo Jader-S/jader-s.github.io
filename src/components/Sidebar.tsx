@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
 import styles from './Sidebar.module.css'
+import logo from '../assets/content/base/LOGO.png'
 
 type Props = { open: boolean; onClose: () => void }
 
@@ -42,8 +43,9 @@ export default function Sidebar({ open, onClose }: Props) {
     <aside className={`${styles.sidebar} ${open ? styles.open : ''}`} aria-hidden={!open}>
       <button className={styles.backdrop} aria-label="Close navigation" onClick={onClose} />
       <div className={styles.panel} role="navigation" aria-label="Sidebar">
+        <img src={logo} alt="" className={styles.sideLogo} />
         { productItems.length > 0 && (
-          <div style={{ marginTop: 12, borderTop: '1px solid rgba(0,0,0,.06)', paddingTop: 12 }}>
+          <div className={styles.productWrapper}>
             {productItems.map((it) => (
               <a
                 key={it.id}
