@@ -15,7 +15,7 @@ function MainSections() {
       {items.map((it, index) => (
         <img 
           key={it.src} 
-          id={index === 0 ? 'about-content' : undefined}
+          id={index === 1 ? 'about-content' : undefined}
           src={it.src} 
           alt="section" 
         />
