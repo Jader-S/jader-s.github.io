@@ -36,10 +36,9 @@
   color: #fff;
 }
 .productWrapper {
-  max-height: 400px;
+  max-height: calc(100vh - 360px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px;
 }
 
 /* 自定义滚动条样式 */
