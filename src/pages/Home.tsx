@@ -12,8 +12,13 @@ function MainSections() {
     .sort((a, b) => a.order - b.order)
   return (
     <div className={styles.sections}>
-      {items.map((it) => (
-        <img key={it.src} src={it.src} alt="section" />
+      {items.map((it, index) => (
+        <img 
+          key={it.src} 
+          id={index === 0 ? 'about-content' : undefined}
+          src={it.src} 
+          alt="section" 
+        />
       ))}
     </div>
   )
