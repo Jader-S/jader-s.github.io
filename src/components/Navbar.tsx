@@ -96,7 +96,7 @@ export default function Navbar({ onToggleSidebar }: Props) {
           onClick={handleAnchorClick('contact')}
           className={activeSection === 'contact' ? styles.active : undefined}
         >
-          Contact information
+          Contact Us
         </a>
         </nav>
       </div>
