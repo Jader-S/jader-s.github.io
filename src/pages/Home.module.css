@@ -1,5 +1,15 @@
-.content { padding: 24px 0; }
-.sections { display: grid; gap: 24px; }
+.content { 
+  padding: 24px 0; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sections { 
+  display: grid; 
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .footerImage { padding: 24px 0 0; }
 
 

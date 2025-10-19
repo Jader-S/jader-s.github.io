@@ -47,6 +47,18 @@ export default function Carousel() {
         <img className={styles.btnBg} src={rightBg} alt="" aria-hidden="true" />
         <img className={`${styles.btnIcon} ${index === slides.length - 1 ? styles.reverse : ''}`} src={index === slides.length - 1 ? iconDisabled : iconActive} alt="" aria-hidden="true" />
       </button>
+
+      {/* 圆点指示器 */}
+      <div className={styles.dots}>
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            className={`${styles.dot} ${i === index ? styles.dotActive : ''}`}
+            onClick={() => setIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
     </div>
   )
 }
