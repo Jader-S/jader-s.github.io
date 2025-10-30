@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import top from '../assets/content/product/base/top.png'
 import bottom from '../assets/content/product/base/bottom.png'
+import baseBottom from '../assets/content/base/bottom.png'
 import styles from './Product.module.css'
+import ContactForm from '../components/ContactForm'
 
 type Item = { order: number; title: string; src: string; id: string }
 
@@ -123,6 +125,10 @@ export default function Product() {
             </article>
           ))}
           <img src={bottom} alt="footer" className={styles.bottom} />
+          <div className={styles.contactFormArea}>
+            <ContactForm />
+          </div>
+          <img src={baseBottom} alt="footer" className={styles.baseBottom} />
         </section>
       </div>
     </div>

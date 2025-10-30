@@ -45,6 +45,7 @@
   display: grid;
   gap: 240px;
   margin-top: 20vh;
+  position: relative;
 }
 .block {
   scroll-margin-top: 72px;
@@ -59,12 +60,34 @@
   flex-direction: row-reverse;
 }
 .block img {
-  /* flex: 1; */
-  /* max-width: 50%; */
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .bottom {
   margin-top: 20px;
+}
+.baseBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.contactFormArea {
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  bottom: 320px;
 }
 
 @media (max-width: 960px) {
