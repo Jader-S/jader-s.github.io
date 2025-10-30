@@ -1,4 +1,5 @@
 import Carousel from '../components/Carousel'
+import ContactForm from '../components/ContactForm'
 import bottom from '../assets/content/base/bottom.png'
 import styles from './Home.module.css'
 
@@ -31,8 +32,13 @@ export default function Home() {
       <section id="about" className={styles.content}>
         <MainSections />
       </section>
-      <section id="contact" className={styles.footerImage}>
-        <img src={bottom} alt="footer" />
+      <section id="contact" className={styles.contact}>
+        <div className={styles.contactBackground}>
+          <img src={bottom} alt="footer" />
+        </div>
+        <div className={styles.contactFormWrapper}>
+          <ContactForm />
+        </div>
       </section>
     </div>
   )
