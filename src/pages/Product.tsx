@@ -3,6 +3,7 @@ import top from '../assets/content/product/base/top.png'
 import bottom from '../assets/content/product/base/bottom.png'
 import baseBottom from '../assets/content/base/bottom.png'
 import styles from './Product.module.css'
+import ScrollReveal from '../components/ScrollReveal'
 import ContactForm from '../components/ContactForm'
 
 type Item = { order: number; title: string; src: string; id: string }
@@ -97,7 +98,7 @@ export default function Product() {
   return (
     <div className={styles.wrapper}>
       <div ref={heroRef} className={styles.hero} style={{ height: heroHeight ? `${heroHeight}px` : undefined }}>
-        <img src={top} alt="Product hero" />
+        <img src={top} alt="Product hero" loading="eager" decoding="async" />
       </div>
       <div className={styles.container}>
         {/* <aside className={styles.sideNav} aria-label="Product sections">
@@ -121,14 +122,12 @@ export default function Product() {
               }}
               className={styles.block}
             >
-              <img src={it.src} alt={it.title} />
+              <ScrollReveal>
+                <img src={it.src} alt={it.title} loading="lazy" decoding="async" sizes="100vw" />
+              </ScrollReveal>
             </article>
           ))}
-          <img src={bottom} alt="footer" className={styles.bottom} />
-          <div className={styles.contactFormArea}>
-            <ContactForm />
-          </div>
-          <img src={baseBottom} alt="footer" className={styles.baseBottom} />
+          <img src={bottom} alt="footer" className={styles.bottom} loading="lazy" decoding="async" />
         </section>
       </div>
     </div>

@@ -36,16 +36,24 @@ export default function Carousel() {
   return (
     <div className={styles.carousel}>
       {slides.map((s, i) => (
-        <img key={s.src} src={s.src} className={`${styles.slide} ${i === index ? styles.active : ''}`} alt="slide" />
+        <img
+          key={s.src}
+          src={s.src}
+          className={`${styles.slide} ${i === index ? styles.active : ''}`}
+          alt="slide"
+          loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+          sizes="100vw"
+        />
       ))}
 
       <button className={`${styles.navBtn} ${styles.left}`} onClick={prev} aria-label="Previous" disabled={index === 0}>
-        <img className={styles.btnBg} src={leftBg} alt="" aria-hidden="true" />
-        <img className={`${styles.btnIcon} ${index !== 0 ? styles.reverse : ''}`} src={index === 0 ? iconDisabled : iconActive} alt="" aria-hidden="true" />
+        <img className={styles.btnBg} src={leftBg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img className={`${styles.btnIcon} ${index !== 0 ? styles.reverse : ''}`} src={index === 0 ? iconDisabled : iconActive} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       </button>
       <button className={`${styles.navBtn} ${styles.right}`} onClick={next} aria-label="Next" disabled={index === slides.length - 1}>
-        <img className={styles.btnBg} src={rightBg} alt="" aria-hidden="true" />
-        <img className={`${styles.btnIcon} ${index === slides.length - 1 ? styles.reverse : ''}`} src={index === slides.length - 1 ? iconDisabled : iconActive} alt="" aria-hidden="true" />
+        <img className={styles.btnBg} src={rightBg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img className={`${styles.btnIcon} ${index === slides.length - 1 ? styles.reverse : ''}`} src={index === slides.length - 1 ? iconDisabled : iconActive} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       </button>
 
       {/* 圆点指示器 */}

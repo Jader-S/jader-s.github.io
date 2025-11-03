@@ -7,7 +7,7 @@
 .sections { 
   display: grid; 
   gap: 24px;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
 }
 
@@ -38,10 +38,26 @@
 .contactFormWrapper {
   position: relative;
   z-index: 2;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
   padding: 0 20px;
   bottom: 10vw;
+}
+
+
+/* Contact layout grid */
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.formCol { min-width: 0; }
+.mapCol { min-width: 0; }
+
+@media (max-width: 992px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 

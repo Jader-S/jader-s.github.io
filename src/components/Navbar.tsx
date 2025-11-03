@@ -1,76 +1,50 @@
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
 import styles from './Navbar.module.css'
 import logo from '../assets/header/logo.png'
 import moreIcon from '../assets/header/more.png'
 
 type Props = { onToggleSidebar: () => void }
 
+type ProductItem = { id: string; title: string }
+
+function slugify(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
 export default function Navbar({ onToggleSidebar }: Props) {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
-  const [activeSection, setActiveSection] = useState<string>('')
+  const [showProductMenu, setShowProductMenu] = useState(false)
 
-  // 监听页面滚动，检测当前可见的部分
+  const productItems = useMemo<ProductItem[]>(() => {
+    const modules = import.meta.glob('../assets/content/product/list/*.png', { eager: true }) as Record<string, any>
+    const items = Object.keys(modules)
+      .map((p) => p.split('/').pop() || '')
+      .map((name) => {
+        const [orderText, rest] = name.split('-', 2)
+        const order = Number(orderText)
+        const title = (rest || '').replace(/\..+$/, '')
+        return { order: Number.isNaN(order) ? 0 : order, title, id: slugify(title) }
+      })
+      .sort((a, b) => a.order - b.order)
+      .map(({ id, title }) => ({ id, title }))
+    return items
+  }, [])
+
+  // 监听 URL hash 变化（滚动时 Product 页面会自动更新 hash）
+  const [active, setActive] = useState<string | null>(null)
   useEffect(() => {
-    if (pathname !== '/') {
-      setActiveSection('')
-      return
-    }
+    const handler = () => setActive(window.location.hash.replace('#', '') || null)
+    handler()
+    window.addEventListener('hashchange', handler)
+    return () => window.removeEventListener('hashchange', handler)
+  }, [])
 
-    const handleScroll = () => {
-      const sections = ['about-content', 'contact']
-      const scrollPosition = window.scrollY + window.innerHeight / 2
-
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          const elementTop = rect.top + window.scrollY
-          const elementBottom = elementTop + rect.height
-
-          if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
-            setActiveSection(sectionId)
-            return
-          }
-        }
-      }
-
-      // 如果在顶部区域，不高亮任何部分
-      if (window.scrollY < 200) {
-        setActiveSection('')
-      }
-    }
-
-    handleScroll() // 初始检测
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [pathname])
-
-  const handleAnchorClick = (anchor: string) => (e: React.MouseEvent) => {
-    e.preventDefault()
-    if (pathname !== '/') {
-      // 如果不在首页，先导航到首页，然后滚动
-      navigate('/')
-      setTimeout(() => {
-        const element = document.getElementById(anchor)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      }, 100)
-    } else {
-      // 如果已经在首页，直接滚动
-      const element = document.getElementById(anchor)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-    }
-  }
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.leftGroup}>
-        <button aria-label="More" className={styles.more} onClick={onToggleSidebar}>
+        <button aria-label="More" className={styles.more} onClick={onToggleSidebar} aria-expanded={false} aria-controls="site-sidebar">
           <img src={moreIcon} alt="More" />
         </button>
         <Link to="/" className={styles.logoWrap} aria-label="Valiant">
@@ -78,26 +52,37 @@ export default function Navbar({ onToggleSidebar }: Props) {
         </Link>
         </div>
         <nav className={styles.nav} aria-label="Main">
-        <NavLink to="/" className={({ isActive }) => (isActive && !activeSection ? styles.active : undefined)}>
+        <NavLink to="/" className={({ isActive }) => (isActive ? styles.active : undefined)}>
           Valiant
         </NavLink>
-        <a 
-          href="/#about-content" 
-          onClick={handleAnchorClick('about-content')}
-          className={activeSection === 'about-content' ? styles.active : undefined}
-        >
+        <NavLink to="/about" className={({ isActive }) => (isActive ? styles.active : undefined)}>
           About Company
-        </a>
-        <NavLink to="/product" className={({ isActive }) => (isActive ? styles.active : undefined)}>
-          Product
         </NavLink>
-        <a 
-          href="/#contact" 
-          onClick={handleAnchorClick('contact')}
-          className={activeSection === 'contact' ? styles.active : undefined}
+        <div 
+          className={styles.productDropdown}
+          onMouseEnter={() => setShowProductMenu(true)}
+          onMouseLeave={() => setShowProductMenu(false)}
         >
+          <NavLink to="/product" className={({ isActive }) => (isActive ? styles.active : undefined)}>
+            Product
+          </NavLink>
+          {showProductMenu && productItems.length > 0 && (
+            <div className={styles.dropdownMenu}>
+              {productItems.map((it) => (
+                <a
+                  key={it.id}
+                  href={pathname === '/product' ? `#${it.id}` : `/product#${it.id}`}
+                  className={`${styles.dropdownItem} ${active === it.id ? styles.activeDropdown : ''}`}
+                >
+                  {it.title}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        <NavLink to="/contact" className={({ isActive }) => (isActive ? styles.active : undefined)}>
           Contact Us
-        </a>
+        </NavLink>
         </nav>
       </div>
     </header>

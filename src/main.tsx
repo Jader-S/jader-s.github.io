@@ -1,10 +1,13 @@
 // React import not required with jsx: react-jsx, remove to satisfy noUnusedLocals
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
 import './styles/global.css'
 import App from './App'
-import Home from './pages/Home'
-import Product from './pages/Product'
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const Product = lazy(() => import('./pages/Product'))
+const Contact = lazy(() => import('./pages/Contact'))
 
 const router = createBrowserRouter([
   {
@@ -12,7 +15,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Home /> },
+      { path: 'about', element: <About /> },
       { path: 'product', element: <Product /> },
+      { path: 'contact', element: <Contact /> },
     ],
   },
 ], {
@@ -25,6 +30,10 @@ const router = createBrowserRouter([
 })
 
 const rootEl = document.getElementById('root') as HTMLElement
-createRoot(rootEl).render(<RouterProvider router={router} />)
+createRoot(rootEl).render(
+  <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
+    <RouterProvider router={router} />
+  </Suspense>
+)
 
 

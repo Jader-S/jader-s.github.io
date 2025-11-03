@@ -82,7 +82,7 @@
   left: 0;
   right: 0;
   z-index: 2;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   width: 100%;
   margin: 0 auto;
   padding: 0 20px;
@@ -101,4 +101,15 @@
     flex-wrap: wrap;
     margin-bottom: 12px;
   }
+}
+
+@media (max-width: 1200px) {
+  .content { gap: 160px; }
+}
+@media (max-width: 992px) {
+  .content { gap: 120px; margin-top: 14vh; }
+  .block { scroll-margin-top: 64px; }
+}
+@media (max-width: 768px) {
+  .content { gap: 80px; margin-top: 12vh; }
 }
