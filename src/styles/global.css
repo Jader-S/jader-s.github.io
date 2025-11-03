@@ -6,3 +6,21 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
 
+/* Animations with reduced-motion respect */
+@media (prefers-reduced-motion: no-preference) {
+  .fadeInUp { opacity: 0; transform: translateY(16px); animation: fadeInUp 600ms ease forwards; }
+  @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+  .gentleScale { transform: scale(0.98); opacity: 0; animation: gentleScale 500ms ease forwards; }
+  @keyframes gentleScale { to { transform: scale(1); opacity: 1; } }
+
+  .linkReveal { position: relative; }
+  .linkReveal::after { content: ''; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: currentColor; transition: width .25s ease; }
+  .linkReveal:hover::after { width: 100%; }
+
+  .btnMicro { transition: transform .15s ease, box-shadow .2s ease; }
+  .btnMicro:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+  .btnMicro:active { transform: translateY(0); box-shadow: 0 3px 10px rgba(0,0,0,.16); }
+}
+
+
