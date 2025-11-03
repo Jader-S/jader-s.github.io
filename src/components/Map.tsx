@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/leaflet.css'
 
 type Props = {
@@ -19,31 +22,37 @@ export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<stro
     let markerInstance: L.Marker | null = null
     let tileLayer: L.TileLayer | null = null
 
-    // Fix default icon URLs in bundlers
-    const icon = L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [0, -28],
+    // Ensure Leaflet default icon works with bundlers (use local assets)
+    L.Icon.Default.mergeOptions({
+      iconUrl: markerIcon,
+      iconRetinaUrl: markerIcon2x,
+      shadowUrl: markerShadow,
     })
 
-    if (mapRef.current) {
+    const init = () => {
+      if (!mapRef.current) return
+      if (leafletRef.current?.mapInstance) {
+        // Already initialized; just update view/marker
+        leafletRef.current.mapInstance.setView([lat, lng], zoom)
+        leafletRef.current.markerInstance.setLatLng([lat, lng])
+        leafletRef.current.markerInstance.bindPopup(addressHtml)
+        return
+      }
       mapInstance = L.map(mapRef.current, { scrollWheelZoom: false })
       mapInstance.setView([lat, lng], zoom)
-
       tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
       }).addTo(mapInstance)
-
-      markerInstance = L.marker([lat, lng], { icon }).addTo(mapInstance)
+      markerInstance = L.marker([lat, lng]).addTo(mapInstance)
       markerInstance.bindPopup(addressHtml)
-
       leafletRef.current = { mapInstance, markerInstance, tileLayer }
     }
 
+    // Defer init to next frame to ensure container has layout size in prod
+    const raf = requestAnimationFrame(init)
+
     return () => {
+      cancelAnimationFrame(raf)
       const current = leafletRef.current
       if (current) {
         if (current.markerInstance) current.markerInstance.remove()
@@ -55,7 +64,7 @@ export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<stro
   }, [lat, lng, addressHtml, zoom])
 
   return (
-    <div ref={mapRef} style={{ height, width: '100%' }} />
+    <div ref={mapRef} style={{ height: typeof height === 'number' ? `${height}px` : height, width: '100%', minHeight: 200 }} />
   )
 }
 
