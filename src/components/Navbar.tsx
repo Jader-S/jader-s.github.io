@@ -1,44 +1,42 @@
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { useEffect, useMemo, useState } from 'react'
+import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 import styles from './Navbar.module.css'
 import logo from '../assets/header/logo.png'
 import moreIcon from '../assets/header/more.png'
+import { productGroups } from '../data/products'
 
 type Props = { onToggleSidebar: () => void }
 
-type ProductItem = { id: string; title: string }
-
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-}
-
 export default function Navbar({ onToggleSidebar }: Props) {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [showProductMenu, setShowProductMenu] = useState(false)
+  
+  // Get current active group from URL, default to first group if on product page without param
+  const groupParam = searchParams.get('group')
+  const currentGroupId = groupParam 
+    ? groupParam 
+    : (pathname === '/product' ? (productGroups[0]?.id ?? '') : '')
 
-  const productItems = useMemo<ProductItem[]>(() => {
-    const modules = import.meta.glob('../assets/content/product/list/*.png', { eager: true }) as Record<string, any>
-    const items = Object.keys(modules)
-      .map((p) => p.split('/').pop() || '')
-      .map((name) => {
-        const [orderText, rest] = name.split('-', 2)
-        const order = Number(orderText)
-        const title = (rest || '').replace(/\..+$/, '')
-        return { order: Number.isNaN(order) ? 0 : order, title, id: slugify(title) }
-      })
-      .sort((a, b) => a.order - b.order)
-      .map(({ id, title }) => ({ id, title }))
-    return items
-  }, [])
 
-  // 监听 URL hash 变化（滚动时 Product 页面会自动更新 hash）
-  const [active, setActive] = useState<string | null>(null)
-  useEffect(() => {
-    const handler = () => setActive(window.location.hash.replace('#', '') || null)
-    handler()
-    window.addEventListener('hashchange', handler)
-    return () => window.removeEventListener('hashchange', handler)
-  }, [])
+  const handleGroupClick = (groupId: string) => {
+    const group = productGroups.find(g => g.id === groupId)
+    if (!group) return
+
+    if (pathname === '/product') {
+      // 如果已经在 product 页面，触发 group 切换事件并更新 URL
+      window.dispatchEvent(new CustomEvent('productGroupChange', { detail: { groupId } }))
+      // 更新 URL 参数
+      navigate(`/product?group=${groupId}`, { replace: true })
+      // 滚动到顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      // 如果不在 product 页面，导航到 product 页面并设置 group
+      navigate(`/product?group=${groupId}`)
+    }
+    setShowProductMenu(false)
+  }
 
   return (
     <header className={styles.header}>
@@ -66,16 +64,16 @@ export default function Navbar({ onToggleSidebar }: Props) {
           <NavLink to="/product" className={({ isActive }) => (isActive ? styles.active : undefined)}>
             Product
           </NavLink>
-          {showProductMenu && productItems.length > 0 && (
+          {showProductMenu && productGroups.length > 0 && (
             <div className={styles.dropdownMenu}>
-              {productItems.map((it) => (
-                <a
-                  key={it.id}
-                  href={pathname === '/product' ? `#${it.id}` : `/product#${it.id}`}
-                  className={`${styles.dropdownItem} ${active === it.id ? styles.activeDropdown : ''}`}
+              {productGroups.map((group) => (
+                <button
+                  key={group.id}
+                  onClick={() => handleGroupClick(group.id)}
+                  className={`${styles.dropdownItem} ${currentGroupId === group.id ? styles.activeDropdown : ''}`}
                 >
-                  {it.title}
-                </a>
+                  {group.title}
+                </button>
               ))}
             </div>
           )}
