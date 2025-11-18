@@ -16,7 +16,12 @@ export default function Contact() {
             <ContactForm />
           </ScrollReveal>
           <ScrollReveal className={styles.mapCol}>
-            <CompanyMap lat={50.1109} lng={8.6821} addressHtml={'<strong>Valiant Global Foods</strong><br/>Frankfurt, Germany'} height={420} />
+            <CompanyMap 
+              lat={39.472109736058776} 
+              lng={-0.35490676912416746} 
+              addressHtml={`<strong>Valiant Global Foods</strong><br/>C/ SALVADOR GINER, S/N<br/>PORTAL 13, PLANTA 2, PUERTA 6<br/>46003 VALÈNCIA-(VALENCIA)`} 
+              height={420} 
+            />
           </ScrollReveal>
         </div>
       </div>

@@ -1,135 +1,135 @@
 import { useEffect, useRef, useState } from 'react'
-import top from '../assets/content/product/base/top.png'
 import bottom from '../assets/content/product/base/bottom.png'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import styles from './Product.module.css'
-import ScrollReveal from '../components/ScrollReveal'
-
-type Item = { order: number; title: string; src: string; id: string }
-
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-}
-
-function useProductItems(): Item[] {
-  const modules = import.meta.glob('../assets/content/product/list/*.png', { eager: true }) as Record<string, any>
-  const items: Item[] = Object.entries(modules).map(([path, mod]) => {
-    const filename = path.split('/').pop() || ''
-    const [orderText, titleWithExt] = filename.split('-', 2)
-    const title = (titleWithExt || '').replace(/\.png$/i, '')
-    const order = Number(orderText)
-    const id = slugify(title)
-    return { order: Number.isNaN(order) ? 0 : order, title, src: (mod as any).default, id }
-  })
-  items.sort((a, b) => a.order - b.order)
-  return items
-}
+import ProductPanels from '../components/ProductPanels'
+import { productGroups } from '../data/products'
 
 export default function Product() {
-  const items = useProductItems()
-  
-  const [heroHeight, setHeroHeight] = useState<number | undefined>()
-  const heroRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<Map<string, HTMLElement>>(new Map())
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const groupParam = searchParams.get('group')
+  // Use URL parameter as single source of truth
+  const activeGroupId = groupParam && productGroups.some(g => g.id === groupParam) 
+    ? groupParam 
+    : (productGroups[0]?.id ?? 'nfc')
+  const [activeId, setActiveId] = useState<string>('')
+  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map())
+  const activeIdRef = useRef<string>('')
 
+  const activeGroup = productGroups.find(g => g.id === activeGroupId) || productGroups[0]
+
+  // Listen for group change events from Navbar (for scrolling)
   useEffect(() => {
-    const img = new Image()
-    img.onload = () => setHeroHeight(img.naturalHeight)
-    img.src = top
+    const handleGroupChange = () => {
+      // Scroll to top when group changes
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    window.addEventListener('productGroupChange', handleGroupChange as EventListener)
+    return () => window.removeEventListener('productGroupChange', handleGroupChange as EventListener)
   }, [])
 
-  // 使用 scroll 事件监听，找到当前在视口中心的元素
+  // Initialize activeId when group changes
   useEffect(() => {
-    
-    const updateActiveSection = () => {
-      if (itemRefs.current.size === 0) {
-        return
-      }
+    if (activeGroup?.items[0]?.id) {
+      const firstId = activeGroup.items[0].id
+      setActiveId(firstId)
+      activeIdRef.current = firstId
+    }
+  }, [activeGroupId, activeGroup])
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    activeIdRef.current = activeId
+  }, [activeId])
+
+  // No longer need scroll tracking since we're switching panels directly
+
+  useEffect(() => {
+    if (!activeId) return
+    if (window.location.hash.replace('#', '') !== activeId) {
+      window.history.replaceState(null, '', `#${activeId}`)
+    }
+  }, [activeId])
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (hash) {
+      // Check if hash matches a product ID
+      const matchingGroup = productGroups.find(g => 
+        g.items.some(item => item.id === hash)
+      )
+      const NAVBAR_OFFSET = 120 // Navbar height
       
-      const scrollPosition = window.scrollY + window.innerHeight / 2
-
-      let activeId = ''
-      let minDistance = Infinity
-
-      // 找到距离视口中心最近的元素
-      itemRefs.current.forEach((element, id) => {
-        const rect = element.getBoundingClientRect()
-        const elementCenter = rect.top + window.scrollY + rect.height / 2
-        const distance = Math.abs(elementCenter - scrollPosition)
-
-        if (distance < minDistance) {
-          minDistance = distance
-          activeId = id
-        }
-      })
-
-      // 更新 hash
-      if (activeId && window.location.hash !== `#${activeId}`) {
-        window.history.replaceState(null, '', `#${activeId}`)
-        // 手动触发 hashchange 事件
-        window.dispatchEvent(new HashChangeEvent('hashchange'))
+      if (matchingGroup && matchingGroup.id !== activeGroupId) {
+        // Update URL to match the group
+        navigate(`/product?group=${matchingGroup.id}`, { replace: true })
+        setActiveId(hash)
+        setTimeout(() => {
+          const target = document.getElementById(hash)
+          if (target) {
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY
+            const offsetPosition = targetPosition - NAVBAR_OFFSET
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }
+        }, 100)
+      } else if (matchingGroup) {
+        setActiveId(hash)
+        setTimeout(() => {
+          const target = document.getElementById(hash)
+          if (target) {
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY
+            const offsetPosition = targetPosition - NAVBAR_OFFSET
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }
+        }, 100)
       }
     }
+  }, [activeGroupId, navigate])
 
-    // 防抖处理
-    let timeoutId: number
-    const handleScroll = () => {
-      clearTimeout(timeoutId)
-      timeoutId = window.setTimeout(updateActiveSection, 100)
+  const registerRef = (id: string, node: HTMLElement | null) => {
+    if (node) {
+      sectionRefs.current.set(id, node)
+    } else {
+      sectionRefs.current.delete(id)
     }
+  }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    document.addEventListener('scroll', handleScroll, { passive: true })
-    
-    // 延迟初始调用，等待元素渲染完成
-    const initTimer = setTimeout(() => {
-      updateActiveSection()
-    }, 1000)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      document.removeEventListener('scroll', handleScroll)
-      clearTimeout(timeoutId)
-      clearTimeout(initTimer)
-    }
-  }, [])
+  const handleNavItemClick = (itemId: string) => {
+    setActiveId(itemId)
+    activeIdRef.current = itemId
+    // Update URL hash
+    window.history.replaceState(null, '', `#${itemId}`)
+  }
 
   return (
-    <div className={styles.wrapper}>
-      <div ref={heroRef} className={styles.hero} style={{ height: heroHeight ? `${heroHeight}px` : undefined }}>
+    <div className={styles.page}>
+      {/* <div className={styles.hero}>
         <img src={top} alt="Product hero" loading="eager" decoding="async" />
-      </div>
-      <div className={styles.container}>
-        {/* <aside className={styles.sideNav} aria-label="Product sections">
-          {items.map((it) => (
-            <a key={it.id} href={`#${it.id}`} className={active === it.id ? styles.active : undefined}>
-              {it.title}
-            </a>
-          ))}
-        </aside> */}
-        <section className={styles.content}>
-          {items.map((it) => (
-            <article
-              key={it.id}
-              id={it.id}
-              ref={(el) => {
-                if (el) {
-                  itemRefs.current.set(it.id, el)
-                } else {
-                  itemRefs.current.delete(it.id)
-                }
-              }}
-              className={styles.block}
-            >
-              <ScrollReveal>
-                <img src={it.src} alt={it.title} loading="lazy" decoding="async" sizes="100vw" />
-              </ScrollReveal>
-            </article>
-          ))}
+      </div> */}
+
+      <div className={styles.content}>
+        <main className={styles.main}>
+          {activeGroup && (
+            <ProductPanels 
+              group={activeGroup} 
+              activeId={activeId}
+              onItemClick={handleNavItemClick}
+              registerRef={registerRef} 
+            />
+          )}
           <img src={bottom} alt="footer" className={styles.bottom} loading="lazy" decoding="async" />
-        </section>
+        </main>
       </div>
     </div>
   )
 }
+
 
 

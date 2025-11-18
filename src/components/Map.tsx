@@ -13,6 +13,17 @@ type Props = {
   zoom?: number
 }
 
+// Create a custom icon instance to ensure it works in production
+const defaultIcon = new L.Icon({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+})
+
 export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<strong>Valiant Global Foods</strong><br/>Frankfurt, Germany', height = 360, zoom = 15 }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null)
   const leafletRef = useRef<{ mapInstance: L.Map; markerInstance: L.Marker; tileLayer: L.TileLayer } | null>(null)
@@ -22,12 +33,8 @@ export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<stro
     let markerInstance: L.Marker | null = null
     let tileLayer: L.TileLayer | null = null
 
-    // Ensure Leaflet default icon works with bundlers (use local assets)
-    L.Icon.Default.mergeOptions({
-      iconUrl: markerIcon,
-      iconRetinaUrl: markerIcon2x,
-      shadowUrl: markerShadow,
-    })
+    // Set default icon for all markers
+    L.Marker.prototype.options.icon = defaultIcon
 
     const init = () => {
       if (!mapRef.current) return
@@ -43,7 +50,7 @@ export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<stro
       tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
       }).addTo(mapInstance)
-      markerInstance = L.marker([lat, lng]).addTo(mapInstance)
+      markerInstance = L.marker([lat, lng], { icon: defaultIcon }).addTo(mapInstance)
       markerInstance.bindPopup(addressHtml)
       leafletRef.current = { mapInstance, markerInstance, tileLayer }
     }

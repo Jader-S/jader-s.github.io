@@ -1,15 +1,12 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* max-width: 800px; */
+.page {
+  position: relative;
+  padding-top: 140px;
+  background: radial-gradient(circle at top, #fff8ed 0%, #fff 60%);
 }
 
 .hero {
-  position: absolute;
-  top:0;
-  z-index: 0;
-  /* max-width: 1080px; */
+  width: min(1200px, 100% - 48px);
+  margin: 0 auto 48px;
 }
 
 .hero img {
@@ -17,99 +14,45 @@
   height: auto;
   display: block;
 }
-.container {
-  padding: 24px 0;
-  align-items: start;
-  z-index: 20;
-  /* max-width: 1080px; */
-}
-/* Fixed left sidebar per product page spec */
-.sideNav {
-  position: fixed;
-  left: 16px;
-  top: 140px;
-  width: var(--product-side-width, 220px);
+
+.content {
+  width: min(1400px, 100% - 48px);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-.sideNav a {
-  padding: 6px 8px;
-  border-left: 3px solid transparent;
-}
-.active {
-  border-left-color: var(--accent);
-  background: rgba(247, 183, 24, 0.15);
-}
-.content {
-  display: grid;
-  gap: 240px;
-  margin-top: 20vh;
+  gap: 32px;
   position: relative;
 }
-.block {
-  scroll-margin-top: 72px;
-  display: flex;
-  align-items: center;
-  /* min-height: 400px; */
-}
-.block:nth-child(odd) {
-  flex-direction: row;
-}
-.block:nth-child(even) {
-  flex-direction: row-reverse;
-}
-.block img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+
+.main {
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
 }
 
 .bottom {
-  margin-top: 20px;
-}
-.baseBottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-
-.contactFormArea {
-  position: absolute;
-  bottom: 100px;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  /* max-width: 1200px; */
   width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-  box-sizing: border-box;
-  bottom: 320px;
+  margin-top: 80px;
 }
 
-@media (max-width: 960px) {
-  .container {
-    padding: 16px;
+@media (max-width: 1024px) {
+  .page {
+    padding-top: 100px;
   }
-  .sideNav {
-    position: static;
-    width: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
+
+  .content {
+    gap: 24px;
   }
 }
 
-@media (max-width: 1200px) {
-  .content { gap: 160px; }
-}
-@media (max-width: 992px) {
-  .content { gap: 120px; margin-top: 14vh; }
-  .block { scroll-margin-top: 64px; }
-}
-@media (max-width: 768px) {
-  .content { gap: 80px; margin-top: 12vh; }
+@media (max-width: 640px) {
+  .hero {
+    width: min(100%, 100% - 24px);
+    margin-bottom: 24px;
+  }
+
+  .content {
+    width: min(100%, 100% - 24px);
+    gap: 24px;
+  }
 }

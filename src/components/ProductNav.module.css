@@ -1,0 +1,89 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+.heading {
+  display: none; /* Hide heading when inside ProductPanels */
+}
+
+.label {
+  display: inline-flex;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #fef3e7;
+  color: #c06100;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.link {
+  flex: 1 1 0;
+  min-width: calc((100% - 32px) / 5); /* 确保一行最多5个 */
+  max-width: calc((100% - 32px) / 5);
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: #6d6d6d;
+  color: #fff;
+  font-family: 'MiSans VF', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600; /* Semibold */
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.2s ease;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.link:hover {
+  background: #7d7d7d;
+}
+
+.active {
+  background: #e88d18;
+  color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .link {
+    flex: 1 1 calc((100% - 16px) / 3); /* 中等屏幕一行3个 */
+    max-width: calc((100% - 16px) / 3);
+  }
+}
+
+@media (max-width: 640px) {
+  .link {
+    flex: 1 1 calc((100% - 8px) / 2); /* 小屏幕一行2个 */
+    max-width: calc((100% - 8px) / 2);
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    flex-direction: column;
+  }
+
+  .link {
+    flex: 1 1 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+
+
+
