@@ -1,7 +1,7 @@
 import ContactForm from '../components/ContactForm'
 import CompanyMap from '../components/Map'
 import ScrollReveal from '../components/ScrollReveal'
-import bottom from '../assets/content/base/bottom.png'
+// import bottom from '../assets/content/base/bottom.png'
 import styles from './Home.module.css'
 
 export default function Contact() {
