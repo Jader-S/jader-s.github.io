@@ -7,9 +7,9 @@ import styles from './Home.module.css'
 export default function Contact() {
   return (
     <section className={styles.contact}>
-      <div className={styles.contactBackground}>
+      {/* <div className={styles.contactBackground}>
         <img src={bottom} alt="footer" loading="lazy" decoding="async" />
-      </div>
+      </div> */}
       <div className={styles.contactFormWrapper}>
         <div className={styles.contactGrid}>
           <ScrollReveal className={styles.formCol}>
