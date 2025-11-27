@@ -14,7 +14,7 @@ export type ProductItem = {
 }
 
 export type ProductGroup = {
-  id: 'nfc' | 'concentrate' | 'pulp'
+  id: 'nfc' | 'concentrate' | 'puress' | 'clarified' | 'pulp' | 'essential-oils'
   title: string
   summary: string
   heroImage: string
@@ -318,6 +318,22 @@ export const productGroups: ProductGroup[] = [
     ],
   },
   {
+    id: 'puress',
+    title: 'Puress',
+    summary:
+      'Pure, natural juices processed with minimal intervention to preserve authentic flavor profiles and nutritional integrity.',
+    heroImage: '3-Puress.png',
+    items: [],
+  },
+  {
+    id: 'clarified',
+    title: 'Clarified Juices',
+    summary:
+      'Crystal-clear juices processed through advanced clarification techniques, delivering bright transparency and smooth texture for premium applications.',
+    heroImage: '4-Clarified Juices.png',
+    items: [],
+  },
+  {
     id: 'pulp',
     title: 'Pulp Cells',
     summary:
@@ -373,6 +389,14 @@ export const productGroups: ProductGroup[] = [
         ],
       },
     ],
+  },
+  {
+    id: 'essential-oils',
+    title: 'Essential Oils',
+    summary:
+      'Premium citrus essential oils extracted from fruit peels, delivering concentrated aromas and flavors for beverage, food, and fragrance applications.',
+    heroImage: '6-Essential Oils.png',
+    items: [],
   },
 ]
 
