@@ -1,5 +1,4 @@
 .content { 
-  padding: 24px 0; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +13,6 @@
 .contact {
   position: relative;
   padding: 60px 0;
-  background: #fafafa;
   margin-top:20vw;
 }
 
