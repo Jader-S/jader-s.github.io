@@ -176,11 +176,11 @@
 }
 
 .sectionTitle {
-  color: #000; /* 黑色 */
+  color: #000; /* black */
 }
 
 .techSpecsTitle {
-  color: #e88d18; /* 橙色 - 仅用于 Technical Specifications */
+  color: #e88d18; /* orange - used only for Technical Specifications */
 }
 
 .section p {

@@ -1,77 +1,99 @@
-# Jader's GitHub Pages
+## ValintFoods Website
 
-这是一个使用 React + TypeScript + Vite 构建的个人网站项目。
+This is a personal / company website project built with **React + TypeScript + Vite** and deployed as a static site.
 
-## 🚀 快速开始
+---
 
-### 安装依赖
+## 🚀 Getting Started
+
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### 开发
+### Start development server
 
 ```bash
 npm run dev
 ```
 
-访问 http://localhost:5173 查看开发版本。
+Then open:
 
-### 构建
+```text
+http://localhost:5173
+```
+
+### Build for production
 
 ```bash
 npm run build
 ```
 
-构建产物会输出到 `dist` 目录。
+The build output will be generated in the `dist` directory.
 
-### 预览
+### Preview production build
 
 ```bash
 npm run preview
 ```
 
-预览构建后的项目。
+This runs a local server to preview the built site from `dist`.
 
-## 📦 部署
+---
 
-### 自动部署（推荐）
+## 📦 Deployment
 
-推送代码到 `main` 或 `develop` 分支，GitHub Actions 会自动构建和部署。
+This project is designed to be deployed to a **static hosting environment**, such as your WordPress webspace or any other web server that can serve static files.
 
-```bash
-git push origin develop
-```
+### Example: custom server deployment
 
-### 手动部署
+1. Build locally:
 
-```bash
-npm run deploy
-```
+   ```bash
+   npm run build
+   ```
 
-详细的部署说明请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)。
+2. Upload everything from `dist` to your server (example using `scp`):
 
-## 🛠️ 技术栈
+   ```bash
+   scp -r dist/* a1478919@access-5018136900.webspace-host.com:~/wordpress/
+   ```
 
-- **框架**: React 19
-- **语言**: TypeScript
-- **构建工具**: Vite 5
-- **路由**: React Router DOM 7
-- **部署**: GitHub Pages
+Make sure the server’s document root (or a subdirectory) is pointing to `~/wordpress/` so `index.html` is served correctly.
 
-## 📁 项目结构
+---
 
-```
+## 🛠 Tech Stack
+
+- **Framework**: React 19  
+- **Language**: TypeScript  
+- **Build Tool**: Vite 5  
+- **Router**: React Router DOM 7  
+- **Maps**: Leaflet + React Leaflet  
+
+---
+
+## 📁 Project Structure
+
+```text
 src/
-├── components/       # 可复用组件
-├── pages/           # 页面组件
-├── assets/          # 静态资源
-├── styles/          # 全局样式
-└── utils/           # 工具函数
+├── components/       # Reusable UI components
+├── pages/            # Route-level page components
+├── assets/           # Static assets (images, fonts)
+├── styles/           # Global and layout styles
+└── utils/            # Utility functions and helpers
 ```
 
-## 📄 许可证
+Key entry points:
+
+- `src/main.tsx` – React entry, mounts the app and configures routing  
+- `src/App.tsx` – Application shell (header, main layout, routed content)
+
+---
+
+## 📄 License
 
 MIT
+
 

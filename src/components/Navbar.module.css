@@ -74,7 +74,7 @@
   top: 0;
   left: -20px;
   bottom: 0;
-  width: 20px; /* 根据 bg-l.png 的宽度调整 */
+  width: 20px; /* Adjust according to bg-l.png width */
   background: url("../assets/header/bg-l.png") left top no-repeat;
   background-size: 100% 100%;
   z-index: 2;
@@ -86,7 +86,7 @@
   top: 0;
   right: -20px;
   bottom: 0;
-  width: 20px; /* 根据 bg-r.png 的宽度调整 */
+  width: 20px; /* Adjust according to bg-r.png width */
   background: url("../assets/header/bg-r.png") right top no-repeat;
   background-size: 100% 100%;
   z-index: 2;
@@ -109,7 +109,7 @@
   .nav { display: none; }
 }
 
-/* Product 下拉菜单样式 */
+/* Product dropdown menu styles */
 .productDropdown {
   position: relative;
 }
@@ -138,7 +138,7 @@
   gap: 4px;
 }
 
-/* 自定义滚动条样式 */
+/* Custom scrollbar styles */
 .dropdownMenu::-webkit-scrollbar {
   width: 6px;
 }

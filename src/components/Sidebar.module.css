@@ -41,7 +41,7 @@
   overflow-x: hidden;
 }
 
-/* 自定义滚动条样式 */
+/* Custom scrollbar styles */
 .productWrapper::-webkit-scrollbar {
   width: 6px;
 }

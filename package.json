@@ -1,15 +1,12 @@
 {
-  "name": "jader-s.github.io",
+  "name": "ValintFoods",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jader-s.github.io",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.21",
@@ -21,7 +18,6 @@
     "vite-plugin-compression": "^0.5.1"
   },
   "dependencies": {
-    "gh-pages": "^6.3.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.4",

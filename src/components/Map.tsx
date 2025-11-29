@@ -47,7 +47,8 @@ export default function CompanyMap({ lat=50.1109, lng=8.6821, addressHtml='<stro
       }
       mapInstance = L.map(mapRef.current, { scrollWheelZoom: false })
       mapInstance.setView([lat, lng], zoom)
-      tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      // Use the German OpenStreetMap tile mirror to improve availability in restricted networks
+      tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
       }).addTo(mapInstance)
       markerInstance = L.marker([lat, lng], { icon: defaultIcon }).addTo(mapInstance)

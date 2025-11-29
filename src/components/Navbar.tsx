@@ -25,14 +25,14 @@ export default function Navbar({ onToggleSidebar }: Props) {
     if (!group) return
 
     if (pathname === '/product') {
-      // 如果已经在 product 页面，触发 group 切换事件并更新 URL
+      // If already on the product page, fire group change event and update the URL
       window.dispatchEvent(new CustomEvent('productGroupChange', { detail: { groupId } }))
-      // 更新 URL 参数
+      // Update URL query parameter
       navigate(`/product?group=${groupId}`, { replace: true })
-      // 滚动到顶部
+      // Scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      // 如果不在 product 页面，导航到 product 页面并设置 group
+      // If not on the product page, navigate there and set the group
       navigate(`/product?group=${groupId}`)
     }
     setShowProductMenu(false)

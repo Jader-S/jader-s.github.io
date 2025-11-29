@@ -31,7 +31,7 @@
 
 .link {
   flex: 1 1 0;
-  min-width: calc((100% - 32px) / 5); /* 确保一行最多5个 */
+  min-width: calc((100% - 32px) / 5); /* Ensure at most 5 items per row */
   max-width: calc((100% - 32px) / 5);
   padding: 14px 18px;
   border-radius: 8px;
@@ -58,14 +58,14 @@
 
 @media (max-width: 1024px) {
   .link {
-    flex: 1 1 calc((100% - 16px) / 3); /* 中等屏幕一行3个 */
+    flex: 1 1 calc((100% - 16px) / 3); /* 3 items per row on medium screens */
     max-width: calc((100% - 16px) / 3);
   }
 }
 
 @media (max-width: 640px) {
   .link {
-    flex: 1 1 calc((100% - 8px) / 2); /* 小屏幕一行2个 */
+    flex: 1 1 calc((100% - 8px) / 2); /* 2 items per row on small screens */
     max-width: calc((100% - 8px) / 2);
     font-size: 0.9rem;
     padding: 12px 14px;

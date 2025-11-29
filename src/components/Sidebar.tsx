@@ -31,7 +31,7 @@ export default function Sidebar({ open, onClose }: Props) {
     return items
   }, [pathname])
   
-  // 监听 URL hash 变化（滚动时 Product 页面会自动更新 hash）
+  // Listen to URL hash changes (Product page automatically updates the hash while scrolling)
   const [active, setActive] = useState<string | null>(null)
   useEffect(() => {
     const handler = () => setActive(window.location.hash.replace('#', '') || null)

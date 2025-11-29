@@ -56,7 +56,7 @@ export default function Carousel() {
         <img className={`${styles.btnIcon} ${index === slides.length - 1 ? styles.reverse : ''}`} src={index === slides.length - 1 ? iconDisabled : iconActive} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       </button>
 
-      {/* 圆点指示器 */}
+      {/* Dot indicators */}
       <div className={styles.dots}>
         {slides.map((_, i) => (
           <button

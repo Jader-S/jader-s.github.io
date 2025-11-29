@@ -7,10 +7,10 @@ main {
   flex: 1;
 }
 .appShell > main { 
-  margin-top: 120px; /* 为 fixed header 预留空间，确保内容从 header 下方开始 */
+  margin-top: 120px; /* Reserve space for the fixed header so content starts below it */
 }
 
-/* 响应式调整，匹配 header 高度 */
+/* Responsive adjustments matching header height */
 @media (max-width: 1200px) {
   main { margin-top: 96px; }
 }
